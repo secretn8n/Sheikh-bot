@@ -1,3 +1,4 @@
 pyTelegramBotAPI
 pymupdf
 python-dotenv
+flask

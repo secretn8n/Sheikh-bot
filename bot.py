@@ -10,6 +10,24 @@ from telebot import types
 from dotenv import load_dotenv
 
 from керне import obp
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/' + BOT_TOKEN, methods=['POST'])
+def webhook():
+    update = types.Update.de_json(request.stream.read().decode('utf-8'))
+    bot.process_new_updates([update])
+    return 'ok', 200
+
+@app.route('/')
+def index():
+    return 'bot is running', 200
+
+if __name__ == '__main__':
+    bot.remove_webhook()
+    bot.set_webhook(url=f'https://ИМЯ_ТВОЕГО_СЕРВИСА.onrender.com/{BOT_TOKEN}')
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
